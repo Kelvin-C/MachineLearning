@@ -8,8 +8,8 @@ weights_path = 'models/model.h5'
 train_X = np.load('./preprocessed/train_X.npy')
 train_y = np.load('./preprocessed/train_y.npy')
 
-print(train_X.shape)
-print(train_y.shape)
+print(f'Train_X shape: {train_X.shape}')
+print(f'Train_Y shape: {train_y.shape}')
 
 m, n_xh, n_xw, n_xc = train_X.shape
 
@@ -37,12 +37,12 @@ out3 = tfl.MaxPooling2D((2, 2))(out3)
 out3 = tfl.Flatten()(out3)
 out = tfl.Dense(300, kernel_initializer='he_normal')(out3)
 out = tfl.BatchNormalization()(out)
-out = tfl.Dropout(0.3)(out)
+out = tfl.Dropout(0.5)(out)
 out = tfl.Activation('relu')(out)
 
 out = tfl.Dense(200, kernel_initializer='he_normal')(out)
 out = tfl.BatchNormalization()(out)
-out = tfl.Dropout(0.3)(out)
+out = tfl.Dropout(0.4)(out)
 out = tfl.Activation('relu')(out)
 
 out = tfl.Dense(100, kernel_initializer='he_normal')(out)
@@ -69,7 +69,7 @@ model.compile(optimizer=optimizer,
               loss=tf.keras.losses.sparse_categorical_crossentropy,
               metrics=tf.keras.metrics.sparse_categorical_accuracy)
 
-data_fit = model.fit(train_X, train_y, epochs=10, batch_size=200)
+data_fit = model.fit(train_X, train_y, epochs=10, batch_size=256)
 
 print(data_fit.history)
 
